@@ -6,11 +6,9 @@ public class PathConfig {
 	
 	public static String LdaResultsPath = "data/LdaResults/";*/
 	
-	public static String ldaDocsPath = "H:\\book\\xmlChangeNewNew\\",
-			rerank="G:\\rerank data and code\\data\\2013SBS rank\\BSOrg_100",
-			UserPath="G:/rerank data and code/data/userData/userProfile";
+	public static String ZHAO="H:/",zhao="G:/";
 	
-	public static String LdaResultsPath = "F:/work-zhaochunhua/SBS/LdaResults/";
+	public static String LdaResultsPath = "E:/LdaResults/";
 	public static int Count=0;
 
 }

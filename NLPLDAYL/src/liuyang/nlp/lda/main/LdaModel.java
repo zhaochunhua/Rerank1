@@ -200,11 +200,6 @@ public class LdaModel {
 			String docname=docSet.docs.get(i).docName;
 			String id=docname.substring(docname.lastIndexOf("\\")+1,docname.lastIndexOf(".xml"));
 			System.out.println(docname+":"+id);
-			if(id.length()>=10)
-				writer.write("b"+id+"\t");
-			else
-				writer.write("u"+id+"\t");
-			System.out.println(docSet.docs.get(i).docName);
 			for(int j = 0; j < K; j++){
 				writer.write(theta[i][j] + "\t");
 			}
@@ -232,7 +227,9 @@ public class LdaModel {
 			}
 			Collections.sort(tWordsIndexArray, new LdaModel.TwordsComparable(phi[i]));
 			writer.write("topic " + i + "\t:\t");
-			for(int t = 0; t < topNum; t++){
+			if(docSet.indexToTermMap.size()<topNum)
+				topNum=docSet.indexToTermMap.size();
+			for(int t = 0; t < topNum; t++){				
 				writer.write(docSet.indexToTermMap.get(tWordsIndexArray.get(t)) + " " + phi[i][tWordsIndexArray.get(t)] + "\t");
 			}
 			writer.write("\n");

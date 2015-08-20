@@ -5,8 +5,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.firstRank.FirstRankBook_no_duplicates;
-
 import liuyang.nlp.lda.com.FileUtil;
 import liuyang.nlp.lda.conf.ConstantConfig;
 import liuyang.nlp.lda.conf.PathConfig;
@@ -22,7 +20,7 @@ public class LdaGibbsSampling {
 	public static class modelparameters {
 		float alpha = 0.5f; //usual value is 50 / K
 		float beta = 0.1f;//usual value is 0.1
-		int topicNum = 1000;
+		int topicNum = 50;
 		int iteration = 500;
 		int saveStep = 100;
 		int beginSaveIters = 400;
@@ -73,23 +71,19 @@ public class LdaGibbsSampling {
 	 * @param args
 	 * @throws IOException 
 	 */
-	public static void main(String[] args) throws IOException {
+	public  void main(List<String> list) throws IOException {
 		// TODO Auto-generated method stub
 		
 		//String originalDocsPath = PathConfig.ldaDocsPath;
-		String UserPath = PathConfig.UserPath;
 		String resultPath = PathConfig.LdaResultsPath;
 		String parameterFile= ConstantConfig.LDAPARAMETERFILE;
 		Boolean isXMLFile=true;
-		
-		FirstRankBook_no_duplicates firankbook=new FirstRankBook_no_duplicates();
-		List<String> listbook=firankbook.bookList(PathConfig.ldaDocsPath,PathConfig.rerank);
-		System.out.println(listbook.size());
+		System.out.println(list.size());
 		modelparameters ldaparameters = new modelparameters();
 		getParametersFromFile(ldaparameters, parameterFile);
 		Documents docSet = new Documents();
-		docSet.readDocs_my(listbook,isXMLFile);//需修改readDocs_my,寻找丢失的书
-		docSet.readDocs(UserPath, isXMLFile);
+		docSet.readDocs_my(list,isXMLFile);
+		//docSet.readDocs(UserPath, isXMLFile);
 		System.out.println("wordMap size " + docSet.termToIndexMap.size());
 		FileUtil.mkdir(new File(resultPath));
 		LdaModel model = new LdaModel(ldaparameters);
@@ -101,4 +95,23 @@ public class LdaGibbsSampling {
 		model.saveIteratedModel(ldaparameters.iteration, docSet);
 		System.out.println("Done!");
 	}
+	/*public static void main(String args[]) throws IOException{
+		FirstRankList fr=new FirstRankList();
+		List<String[]> list=fr.getList(Variable_2.FirstRank_n,Variable_2.CORPUS);		
+		int i=0;
+		while(i<list.size()){
+			List<String> li=new ArrayList<String>();
+			String userPath=Variable_2.Usercorpus+list.get(i)[0]+".xml";
+			if((new File(userPath)).exists())
+				li.add(userPath);
+			else li.add("user");
+			for(int j=0;j<100;j++)
+				li.add(list.get(i+j)[1]);
+			
+			LdaGibbsSampling gibbs=new LdaGibbsSampling();
+			System.out.println("dd");
+			gibbs.main(li);
+			i=i+100;
+		}
+	}*/
 }
